@@ -1,0 +1,8 @@
+.import/*
+simple/bin/*
+simple/.bin/*
+simple/.import/*
+src/out/*
+src/wout/*
+src/Skyliners/.bin/*
+*.exe

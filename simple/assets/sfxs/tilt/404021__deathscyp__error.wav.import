@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/404021__deathscyp__error.wav-55a82e4e57e209a9691b82ed9e93b225.sample"
+
+[deps]
+
+source_file="res://assets/sfxs/tilt/404021__deathscyp__error.wav"
+dest_files=[ "res://.import/404021__deathscyp__error.wav-55a82e4e57e209a9691b82ed9e93b225.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

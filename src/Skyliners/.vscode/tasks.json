@@ -1,0 +1,35 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: gcc build active file",
+			"command": "/bin/gcc",
+			"args": [
+				// Compila um único arquivo .c na mesma pasta.
+				// "-g",
+				// "${file}",
+				// "-o",
+				// "${fileDirname}/${fileBasenameNoExtension}.out"
+
+				// Compila todos os arquivos da pasta e linka em um
+				// executável na pasta '.bin/' (pasta deve existir).
+				"-g",
+				"${relativeFileDirname}/*.c",
+				"-o",
+				"${relativeFileDirname}/.bin/${fileBasenameNoExtension}.out"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "compiler: /bin/gcc"
+		}
+	]
+}

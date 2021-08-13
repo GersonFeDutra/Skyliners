@@ -1,0 +1,150 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/main_theme.tres" type="Theme" id=1]
+[ext_resource path="res://src/ui/InitialScene.gd" type="Script" id=2]
+[ext_resource path="res://src/ui/LanguageButton.tscn" type="PackedScene" id=3]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends RichTextLabel
+
+
+func _ready() -> void:
+	bbcode_text = tr(\"ACCESSIBILITY_DESCRIPTION\")
+	
+	if Game.connect(\"language_changed\", self, \"_on_Game_language_changed\") != OK:
+		push_warning(\"Wouldn't able to connect %s to %s.\" % [Game, self])
+
+
+func _on_Game_language_changed(_language: String) -> void:
+	bbcode_text = tr(\"ACCESSIBILITY_DESCRIPTION\")
+"
+
+[sub_resource type="Animation" id=2]
+resource_name = "fade"
+tracks/0/type = "value"
+tracks/0/path = NodePath("VBoxContainer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 0.5, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "play"
+} ]
+}
+
+[node name="InitialScene" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -512.0
+margin_top = -300.0
+margin_right = 512.0
+margin_bottom = 300.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -205.0
+margin_top = -77.0
+margin_right = 205.0
+margin_bottom = 77.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="VBoxContainer"]
+margin_right = 410.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 410, 50 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VBoxContainer/Panel/HBoxContainer"]
+margin_top = 10.0
+margin_right = 356.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+text = "ACCESSIBILITY_TITLE"
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/Panel/HBoxContainer"]
+margin_left = 360.0
+margin_right = 410.0
+margin_bottom = 50.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
+margin_top = 54.0
+margin_right = 410.0
+margin_bottom = 169.0
+rect_min_size = Vector2( 300, 115 )
+bbcode_enabled = true
+bbcode_text = "ACCESSIBILITY_DESCRIPTION"
+text = "ACCESSIBILITY_DESCRIPTION"
+script = SubResource( 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 173.0
+margin_right = 410.0
+margin_bottom = 202.0
+
+[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer"]
+margin_right = 116.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 116, 0 )
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "LANGUAGE"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LanguageButton" parent="VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
+margin_left = 120.0
+margin_right = 410.0
+focus_next = NodePath("../../SkipButton")
+focus_previous = NodePath("../../Panel/HBoxContainer/CheckButton")
+
+[node name="SkipButton" type="Button" parent="VBoxContainer"]
+margin_left = 180.0
+margin_top = 206.0
+margin_right = 230.0
+margin_bottom = 235.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "SKIP"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/fade = SubResource( 2 )
+[connection signal="toggled" from="VBoxContainer/Panel/HBoxContainer/CheckButton" to="." method="_on_CheckButton_toggled"]
+[connection signal="pressed" from="VBoxContainer/SkipButton" to="." method="_on_SkipButton_pressed"]

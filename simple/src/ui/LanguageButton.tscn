@@ -1,0 +1,96 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/main_theme.tres" type="Theme" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends PopupMenu
+
+# Componente de dropbox para setar as linguagens do jogo.
+
+const LANGUAGES = [
+	\"pt\",
+	\"en\"
+]
+
+export var button_path: NodePath
+onready var button: Button = get_node(button_path)
+
+
+func _ready() -> void:
+	set_process(false)
+	_update_button_text()
+
+
+func _process(_delta) -> void:
+	rect_global_position = button.rect_global_position + Vector2(0, button.rect_size.y)
+	rect_size = button.rect_size
+
+
+func _on_PopupMenu_about_to_show() -> void:
+	set_process(true)
+
+
+func _on_PopupMenu_popup_hide() -> void:
+	set_process(false)
+	button.text = tr(Game.language.to_upper())
+
+
+func _on_LanguageButton_pressed() -> void:
+	
+	if visible:
+		visible = false
+		
+	else:
+		popup()
+		grab_focus()
+
+
+func _on_PopupMenu_id_focused(id: int) -> void:
+	_set_button_text(id)
+
+
+func _on_PopupMenu_id_pressed(id):
+	
+	_set_button_text(id)
+	Game.language = LANGUAGES[id]
+
+
+func _set_button_text(id: int) -> void:
+	button.text = tr(LANGUAGES[id].to_upper())
+
+
+func _update_button_text() -> void:
+	button.text = tr(Game.language.to_upper())
+"
+
+[node name="LanguageButton" type="Button"]
+margin_right = 290.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 65, 0 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "EN"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 3
+
+[node name="PopupMenu" type="PopupMenu" parent="CanvasLayer"]
+margin_left = 136.0
+margin_top = 62.0
+margin_right = 189.0
+margin_bottom = 132.0
+theme = ExtResource( 1 )
+items = [ "PT", null, 0, false, false, 0, 0, null, "", false, "EN", null, 0, false, false, 1, 0, null, "", false ]
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+button_path = NodePath("../..")
+[connection signal="pressed" from="." to="CanvasLayer/PopupMenu" method="_on_LanguageButton_pressed"]
+[connection signal="about_to_show" from="CanvasLayer/PopupMenu" to="CanvasLayer/PopupMenu" method="_on_PopupMenu_about_to_show"]
+[connection signal="id_focused" from="CanvasLayer/PopupMenu" to="CanvasLayer/PopupMenu" method="_on_PopupMenu_id_focused"]
+[connection signal="id_pressed" from="CanvasLayer/PopupMenu" to="CanvasLayer/PopupMenu" method="_on_PopupMenu_id_pressed"]
+[connection signal="popup_hide" from="CanvasLayer/PopupMenu" to="CanvasLayer/PopupMenu" method="_on_PopupMenu_popup_hide"]

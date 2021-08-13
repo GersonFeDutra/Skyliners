@@ -1,0 +1,48 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[  ]
+_global_script_class_icons={
+
+}
+
+[application]
+
+config/name="Skyliners"
+config/description="Adaptação de um projeto de Algoritmos & Estruturas de dados."
+run/main_scene="res://src/ui/InitialScene.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+Game="*res://src/autoload/Game.gd"
+
+[display]
+
+window/size/resizable=false
+window/handheld/orientation="portrait"
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
+
+[input]
+
+full_screen={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777254,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
+[locale]
+
+translations=PoolStringArray( "res://assets/localizations/main.en.translation", "res://assets/localizations/main.pt.translation" )
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"

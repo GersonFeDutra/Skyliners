@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/344687__korground__error-sound.wav-7857191b810a7ebaf38a9daab7520e2c.sample"
+
+[deps]
+
+source_file="res://assets/sfxs/tilt/344687__korground__error-sound.wav"
+dest_files=[ "res://.import/344687__korground__error-sound.wav-7857191b810a7ebaf38a9daab7520e2c.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

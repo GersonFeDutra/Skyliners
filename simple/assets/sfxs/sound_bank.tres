@@ -1,0 +1,26 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Resource
+
+
+const SWOOSHS = [
+#	preload(\"res://assets/sfxs/smooth_swishs/1.wav\"),
+#	preload(\"res://assets/sfxs/smooth_swishs/2.wav\"),
+	preload(\"res://assets/sfxs/smooth_swishs/3.wav\"),
+	preload(\"res://assets/sfxs/smooth_swishs/4.wav\"),
+	preload(\"res://assets/sfxs/smooth_swishs/5.wav\"),
+	preload(\"res://assets/sfxs/smooth_swishs/6.wav\"),
+]
+
+const TILTS = [
+	preload(\"res://assets/sfxs/tilt/344687__korground__error-sound.wav\"),
+	preload(\"res://assets/sfxs/tilt/404021__deathscyp__error.wav\"),
+	preload(\"res://assets/sfxs/tilt/510775__mrthenoronha__error-8-bit.wav\"),
+	preload(\"res://assets/sfxs/tilt/542040__bay-area-bob__gasp-ui-reject.wav\"),
+	preload(\"res://assets/sfxs/tilt/551543__philracoindie__8-bit-deny-error-sound.wav\"),
+]
+"
+
+[resource]
+script = SubResource( 1 )

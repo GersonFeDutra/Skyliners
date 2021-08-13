@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/5.wav-f2978ca751a4a9fd724f5df9f9154348.sample"
+
+[deps]
+
+source_file="res://assets/sfxs/smooth_swishs/5.wav"
+dest_files=[ "res://.import/5.wav-f2978ca751a4a9fd724f5df9f9154348.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

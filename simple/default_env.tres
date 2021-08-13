@@ -1,0 +1,19 @@
+[gd_resource type="Environment" load_steps=2 format=2]
+
+[sub_resource type="ProceduralSky" id=1]
+sky_horizon_color = Color( 0.980392, 0.862745, 0.839216, 1 )
+ground_bottom_color = Color( 0.14902, 0.117647, 0.223529, 1 )
+ground_horizon_color = Color( 0.380392, 0.227451, 0.388235, 1 )
+sun_color = Color( 0.647059, 0.839216, 0.945098, 1 )
+sun_angle_min = 0.0
+sun_angle_max = 0.0
+
+[resource]
+background_mode = 2
+background_sky = SubResource( 1 )
+background_sky_custom_fov = 1.0
+fog_color = Color( 0.356863, 0.227451, 0.0431373, 1 )
+fog_sun_color = Color( 0.470588, 0.156863, 0.0745098, 1 )
+fog_sun_amount = 0.99
+fog_depth_begin = 62.7
+glow_intensity = 0.5

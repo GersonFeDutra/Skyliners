@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/551543__philracoindie__8-bit-deny-error-sound.wav-5cc149f23dca60a67967b8d046e9b60f.sample"
+
+[deps]
+
+source_file="res://assets/sfxs/tilt/551543__philracoindie__8-bit-deny-error-sound.wav"
+dest_files=[ "res://.import/551543__philracoindie__8-bit-deny-error-sound.wav-5cc149f23dca60a67967b8d046e9b60f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

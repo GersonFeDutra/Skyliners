@@ -1,0 +1,101 @@
+keys,en,pt
+GAME_START_DIALOG,"- How to play:
+        1. Use the [color=#d2D97C]arrows[/color] keys to [i]move[/i] the pieces;
+        2. Press [color=#d2D97C]space[/color] to [i]insert[/i] a piece;
+        3. Press the [color=#d2D97C]tab[/color] key to [i]change[/i] pieces.
+        *  Press [b]F11[/b] to shift full screen mode.
+- Starting the game:
+    1. A [color=#7BCCA3]park[/color] is placed in the center of the board;
+    2. Six [color=#7180B3]apartments[/color] are placed in the center of of the board in random positions around the [color=#7BCCA3]park[/color];
+    3. Each player starts with [color=#7180B3]12 apartments[/color], [color=#7BCCA3]1 park[/color] and [color=#CF90A8]3 roofs[/color].
+- Playing:
+    1. Players can place one piece at a time each round;
+    2. A round ends when everyone has played;
+    3. The game ends in the round in which one of the players has used all of his [color=#7180B3]apartments[/color].
+- Pieces:
+    [b][color=#7180B3]Apartment:[/color][/b] can be placed on the floor, or on top of other [color=#7180B3]apartments[/color];
+    [b][color=#7BCCA3]Park:[/color][/b] can only be placed on the ground;
+    [b][color=#CF90A8]Roof:[/color][/b] can only be placed on [color=#7180B3]apartments[/color].
+- Points:
+    1. As players position their pieces they acquire points for each building in your line of sight;
+    2. The vision of each player is determined by the side they are on the board: the tall buildings cancel the view of the lower buildings that are further away in the same line of sight, perpendicular to the player;
+    3. The player who scores the most points at the end of the game wins.","- Como jogar:
+        1. Use as [color=#d2D97C]setas[/color] para [i]mover[/i] as peças;
+        2. Pressione [color=#d2D97C]espaço[/color] para [i]inserir[/i] uma peça;
+        3. Pressione a tecla [color=#d2D97C]tab[/color] para [i]alternar[/i] as peças.
+        *  Pressione [b]F11[/b] para mudar o modo de tela cheia.
+- Iniciando o jogo:
+    1. Um [color=#7BCCA3]parque[/color] é posicionado no centro do tabuleiro;
+    2. Seis [color=#7180B3]andares[/color] são posicionados ao redor do [color=#7BCCA3]parque[/color] em posições aleatórias;
+    3. Cada jogador inicia com [color=#7180B3]12 andares[/color], [color=#7BCCA3]1 parque[/color] e [color=#CF90A8]3 coberturas[/color].
+- Jogando:
+    1. Jogadores podem posicionar uma peça por vez em cada rodada;
+    2. Uma rodada se encerra quando todos tiverem jogado;
+    3. O jogo acaba na rodada em que um dos jogadores tiver usado todos os seus [color=#7180B3]andares[/color].
+- Peças:
+    [b][color=#7180B3]Andares:[/color][/b] podem ser posicionados no chão, ou no topo de outros [color=#7180B3]andares[/color];
+    [b][color=#7BCCA3]Parques:[/color][/b] só podem ser colocados no chão;
+    [b][color=#CF90A8]Coberturas:[/color][/b] só podem ser inseridos sobre [color=#7180B3]apartamentos[/color].
+- Pontos:
+    1. Conforme os jogadores posicionam suas peças eles adquirem pontos para cada prédio em sua linha de visão;
+    2. A visão de cada jogador é determinada pelo lado em que estão do tabuleiro: os prédios mais altos cancelam a visão dos prédios mais baixos que estão mais distantes em uma mesma linha de visão, perpendicular ao jogador;
+    3. O jogador que fizer mais pontos no final do jogo ganha."
+GAME_START_DIALOG_ACCM,"- How to play:
+        1. Use the [color=#d2D97C]arrows[/color] keys to [i]move[/i] the pieces;
+        2. Press [color=#d2D97C]space[/color] to [i]insert[/i] a piece;
+        3. Press the [color=#d2D97C]tab[/color] key to [i]change[/i] pieces.
+        *  Press [b]F11[/b] to shift full screen mode.
+- Starting the game:
+    1. A [color=#7BCCA3]park [img=20x20]res://assets/textures/park-bench.png[/img][/color] is placed in the center of the board;
+    2. Six [color=#7180B3]apartments [img=20x20]res://assets/textures/elevator.png[/img][/color] are placed in the center of of the board in random positions around the [color=#7BCCA3]park [img=20x20]res://assets/textures/park-bench.png[/img][/color];
+    3. Each player starts with [color=#7180B3]12 apartments [img=20x20]res://assets/textures/elevator.png[/img][/color], [color=#7BCCA3]1 park [img=20x20]res://assets/textures/park-bench.png[/img][/color] and [color=#CF90A8]3 roofs [img=20x20]res://assets/textures/private.png[/img][/color].
+- Playing:
+    1. Players can place one piece at a time each round;
+    2. A round ends when everyone has played;
+    3. The game ends in the round in which one of the players has used all of his [color=#7180B3]apartments [img=20x20]res://assets/textures/elevator.png[/img][/color].
+- Pieces:
+    [b][color=#7180B3]Apartment: [img=20x20]res://assets/textures/elevator.png[/img][/color][/b] can be placed on the floor, or on top of other [color=#7180B3]apartments [img=20x20]res://assets/textures/elevator.png[/img][/color];
+    [b][color=#7BCCA3]Park [img=20x20]res://assets/textures/park-bench.png[/img]:[/color][/b] can only be placed on the ground;
+    [b][color=#CF90A8]Roof: [img=20x20]res://assets/textures/private.png[/img][/color][/b] can only be placed on [color=#7180B3]apartments [img=20x20]res://assets/textures/elevator.png[/img][/color].
+- Points:
+    1. As players position their pieces they acquire points for each building in your line of sight;
+    2. The vision of each player is determined by the side they are on the board: the tall buildings cancel the view of the lower buildings that are further away in the same line of sight, perpendicular to the player;
+    3. The player who scores the most points at the end of the game wins.","- Como jogar:
+        1. Use as [color=#d2D97C]setas[/color] para [i]mover[/i] as peças;
+        2. Pressione [color=#d2D97C]espaço[/color] para [i]inserir[/i] uma peça;
+        3. Pressione a tecla [color=#d2D97C]tab[/color] para [i]alternar[/i] as peças.
+        *  Pressione [b]F11[/b] para mudar o modo de tela cheia.
+- Iniciando o jogo:
+    1. Um [color=#7BCCA3]parque [img=20x20]res://assets/textures/park-bench.png[/img][/color] é posicionado no centro do tabuleiro;
+    2. Seis [color=#7180B3]andares [img=20x20]res://assets/textures/elevator.png[/img][/color] são posicionados ao redor do [color=#7BCCA3]parque [img=20x20]res://assets/textures/park-bench.png[/img][/color] em posições aleatórias;
+    3. Cada jogador inicia com [color=#7180B3]12 andares [img=20x20]res://assets/textures/elevator.png[/img][/color], [color=#7BCCA3]1 parque [img=20x20]res://assets/textures/park-bench.png[/img][/color] e [color=#CF90A8]3 coberturas [img=20x20]res://assets/textures/private.png[/img][/color].
+- Jogando:
+    1. Jogadores podem posicionar uma peça por vez em cada rodada;
+    2. Uma rodada se encerra quando todos tiverem jogado;
+    3. O jogo acaba na rodada em que um dos jogadores tiver usado todos os seus [color=#7180B3]andares [img=20x20]res://assets/textures/elevator.png[/img][/color].
+- Peças:
+    [b][color=#7180B3]Andares [img=20x20]res://assets/textures/elevator.png[/img]:[/color][/b] podem ser posicionados no chão, ou no topo de outros [color=#7180B3]andares [img=20x20]res://assets/textures/elevator.png[/img][/color];
+    [b][color=#7BCCA3]Parques [img=20x20]res://assets/textures/park-bench.png[/img]:[/color][/b] só podem ser colocados no chão;
+    [b][color=#CF90A8]Coberturas [img=20x20]res://assets/textures/private.png[/img]:[/color][/b] só podem ser inseridos sobre [color=#7180B3]apartamentos[/color].
+- Pontos:
+    1. Conforme os jogadores posicionam suas peças eles adquirem pontos para cada prédio em sua linha de visão;
+    2. A visão de cada jogador é determinada pelo lado em que estão do tabuleiro: os prédios mais altos cancelam a visão dos prédios mais baixos que estão mais distantes em uma mesma linha de visão, perpendicular ao jogador;
+    3. O jogador que fizer mais pontos no final do jogo ganha."
+ACCESSIBILITY_TITLE,Enable accessibility mode (color blindness),Ativar modo de acessibilidade (daltonismo)
+ACCESSIBILITY_DESCRIPTION,"[center]The accessibility mode will add iconographies to improve the player's experience. As shown below:
+Apartments: [img=28x28]res://assets/textures/elevator.png[/img], Parks: [img=28x28]res://assets/textures/park-bench.png[/img] Roofs: [img=28x28]res://assets/textures/private.png[/img][/center]","[center]O modo de acessibilidade irá adicionar algumas iconografias para melhorar a experiência do jogador. Como mostrado abaixo:
+Apartmentos: [img=28x28]res://assets/textures/elevator.png[/img], Parques: [img=28x28]res://assets/textures/park-bench.png[/img] Coberturas: [img=28x28]res://assets/textures/private.png[/img][/center]"
+LANGUAGE,Language:,Linguagem:
+EN,English,Inglês
+PT,Portuguese,Português
+CURRENT_PLAYER,Current Player:,Jogador atual:
+NORTH,North,Norte
+EAST,East,Leste
+SOUTH,South,Sul
+WEAST,Weast,Oeste
+PLAYER_POINTS,Player Points:,Pontuação do jogador:
+POINTS,Points:,Pontos:
+PLAY_AGAIN,Wanna play again?,Deseja jogar novamente?
+PLAYER,Player,Jogador
+WON,won,Venceu
+SKIP,Skip,Avançar
