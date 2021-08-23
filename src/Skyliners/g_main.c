@@ -110,7 +110,7 @@ int main()
 
     int get_winner(first_player, board);
     int last_player = (first_player + i) % PLAYERS;
-	// Usamos o valor de `i` que ficou na memória para obter o último jogador, ao final.
+    // Usamos o valor de `i` que ficou na memória para obter o último jogador, ao final.
 
     int can_exit;
     do {

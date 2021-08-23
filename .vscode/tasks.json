@@ -1,0 +1,64 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build Project",
+			"command": "bash",
+			"type": "shell",
+			"args": [
+				"build_mult_lib.sh"
+			],
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"focus": true,
+			},
+			"group": "build",
+			"options": {
+				"cwd": "${workspaceFolder}/src/"
+			},
+		},
+		{
+			"label": "Run Godot",
+			"type": "shell",
+			"command": "~/.local/share/hourglass/versions/3.2.3/godot ~/Documents/Godot/3.2.3/Skyliners_godot/simple/project.godot",
+			"problemMatcher": []
+		},
+		{
+			"label": "Build Project & Run Godot",
+			"command": "~/.local/share/hourglass/versions/3.2.3/godot ~/Documents/Godot/3.2.3/Skyliners_godot/simple/project.godot",
+			"type": "shell",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"focus": true,
+			},
+			"group": "build",
+			"options": {
+				"cwd": "${workspaceFolder}/src/"
+			},
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"Build Project"
+			]
+		},
+		{
+			"label": "Build Project & Run Main Scene",
+			"command": "/home/linky/.local/share/hourglass/versions/3.2.3/godot --path /home/linky/Documents/Godot/3.2.3/Skyliners_godot/simple --position 171,84 res://src/Main.tscn",
+			"type": "shell",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"focus": true,
+			},
+			"group": "build",
+			"options": {
+				"cwd": "${workspaceFolder}/src/"
+			},
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"Build Project"
+			],
+		},
+	]
+}

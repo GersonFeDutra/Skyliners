@@ -4,18 +4,26 @@
 #include "./Skyliners/game_board.h"
 // #include "./Skyliners/list.h"
 #include "./Skyliners/stack.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
 // Meus defines
 #define PLAYERS 4 // Quantidade de jogadores.
+#define NORTH 0
+#define EAST 1
+#define SOUTH 2
+#define WEST 3
+
+#define IS_ON_BOUNDS(X, Y) (X >= 0 && X < SIZE) && (Y >= 0 && Y < SIZE)
 
 // Enum com dados da API do motor.
 const godot_gdnative_core_api_struct *api = NULL;
 const godot_gdnative_ext_nativescript_api_struct *nativescript_api = NULL;
 // Notas pessoais: Por quê constantes?
 
+static const int LAST_ROOM = SIZE - 1; // Última "casa" do tabuleiro.
 
 // Construtor NativeScript
 void *simple_constructor(godot_object *p_instance, void *p_method_data);
@@ -50,6 +58,101 @@ godot_variant simple_get_winner(godot_object *p_instance, void *p_method_data, v
 
 godot_variant simple_get_pieces_count(godot_object *p_instance, void *p_method_data,
 	void *p_user_data, int p_num_args, godot_variant **p_args);
+
+// godot_variant simple_is_inside_limits(godot_object *p_instance, void *p_method_data,
+// 	void *p_user_data, int p_num_args, godot_variant **p_args);
+
+godot_variant simple_get_rotated_coords(godot_object *p_instance, void *p_method_data,
+	void *p_user_data, int p_num_args, godot_variant **p_args);
+
+godot_variant simple_get_next_rotated_coords(godot_object *p_instance, void *p_method_data,
+	void *p_user_data, int p_num_args, godot_variant **p_args);
+
+/* Funções auxiliares */
+
+static void _generate_godot_method(
+	godot_variant (*method)(godot_object *, void *, void *, int, godot_variant **), void *p_handle,
+	char *method_name)
+{
+	godot_instance_method method_data = {NULL, NULL, NULL};
+	method_data.method = method;
+	godot_method_attributes attributes = {GODOT_METHOD_RPC_MODE_DISABLED};
+	nativescript_api->godot_nativescript_register_method(
+		p_handle, "Simple", method_name, attributes, method_data);
+}
+
+
+static void _get_rotated_coords(int64_t *x, int64_t *y, int64_t player)
+{
+	switch (player) {
+		case NORTH: {
+			*x = LAST_ROOM - *x;
+			*y = LAST_ROOM - *y;
+		} break; // Sul
+		case EAST: {
+			uint64_t swap = *x;
+			*x = *y;
+			*y = LAST_ROOM - swap;
+		} break; // Leste
+		case WEST: {
+			uint64_t swap = *x;
+			*x = LAST_ROOM - *y;
+			*y = swap;
+		} break; // Oeste
+	}
+}
+
+
+static void _get_next_rotated_coords(
+	int64_t *x, int64_t *y, uint64_t next_x, uint64_t next_y, int64_t player)
+{
+	_get_rotated_coords(x, y, player);
+
+	switch (player) {
+		case NORTH: {
+			*x -= next_x;
+			*y -= next_y;
+		} break; // Sul
+		case EAST: {
+			*x += next_y;
+			*y -= next_x;
+		} break; // Leste
+		case SOUTH: {
+			*x += next_x;
+			*y += next_y;
+		} break; // Norte
+		case WEST: {
+			*x -= next_y;
+			*y += next_x;
+		} break; // Oeste
+	}
+}
+
+
+/* Função auxiliar que adiciona um par key-value a um dicionário da Godot. */
+static void add_to_godot_dictionary(
+	godot_dictionary *self, char *key_name, void *value, enum godot_variant_type type)
+{
+	godot_string key;
+	godot_variant key_var;
+	godot_variant value_var;
+
+	api->godot_string_new(&key);
+	api->godot_string_parse_utf8(&key, key_name);
+	api->godot_variant_new_string(&key_var, &key);
+
+	// Determina o correspondente valor daquela chave
+	switch (type) {
+		case GODOT_VARIANT_TYPE_BOOL:
+			api->godot_variant_new_bool(&value_var, *((godot_bool *)(value)));
+			break;
+		case GODOT_VARIANT_TYPE_INT:
+			api->godot_variant_new_int(&value_var, *((godot_int *)(value)));
+			break;
+	}
+
+	api->godot_dictionary_set(self, &key_var, &value_var);
+}
 
 
 void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options)
@@ -114,64 +217,38 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle)
 	nativescript_api->godot_nativescript_register_method(
 		p_handle, "Simple", "get_data", attributes, get_data);
 
+	// Struct com informações sobre um método que será registrado no motor.
+	struct method {
+		godot_variant (*func)(godot_object *, void *, void *, int, godot_variant **);
+		char *name;
+	};
 
-	// Minhas funções:
+	const uint8_t LEN = 8;
+	uint8_t i;
 
-	// Teste
-	/*
-	godot_instance_method list_teste = {NULL, NULL, NULL};
-	list_teste.method = &simple_teste;
-	godot_method_attributes teste_atributes = {GODOT_METHOD_RPC_MODE_DISABLED};
-	nativescript_api->godot_nativescript_register_method(
-	    p_handle, "Simple", "test", teste_atributes, list_teste);
-	*/
+	// Vetor com os métodos que serão registrados.
+	struct method methods[] = {
+		// Verificar se está nos limites do mapa
+		// {.func = &simple_is_inside_limits, .name = "is_inside_limits"},
+		{.func = &simple_get_size_at, .name = "get_size_at"},           // Tamanho da pilha
+		{.func = simple_move_piece, .name = "move_piece"},              // Mover peça
+		{.func = &simple_get_points_from, .name = "get_player_points"}, // Pontos do jogador
+		// Condição de final de jogo
+		{.func = &simple_game_can_continue, .name = "can_continue_game"},
+		{.func = &simple_get_winner, .name = "get_winner"},             // Verificação do vencedor
+		{.func = &simple_get_pieces_count, .name = "get_pieces_count"}, // Contagem de peças
+		// Converte as coordenadas conforme a visão dos jogadores
+		{.func = &simple_get_rotated_coords, .name = "get_rotated_coords"},
+		// Faz o memo que a função acima, considerando os próximos passos.
+		{.func = &simple_get_next_rotated_coords, .name = "get_next_rotated_coords"},
+	};
 
-	// Tamanho da pilha
-	godot_instance_method size_at = {NULL, NULL, NULL};
-	size_at.method = &simple_get_size_at;
-	godot_method_attributes get_size_at_atributes = {GODOT_METHOD_RPC_MODE_DISABLED};
-	nativescript_api->godot_nativescript_register_method(
-		p_handle, "Simple", "get_size_at", get_size_at_atributes, size_at);
-
-	// Mover peça
-	godot_instance_method move_piece = {NULL, NULL, NULL};
-	move_piece.method = &simple_move_piece;
-	godot_method_attributes move_piece_atributes = {GODOT_METHOD_RPC_MODE_DISABLED};
-	nativescript_api->godot_nativescript_register_method(
-		p_handle, "Simple", "move_piece", move_piece_atributes, move_piece);
-
-	// Pontos do jogador
-	godot_instance_method get_player_points = {NULL, NULL, NULL};
-	get_player_points.method = &simple_get_points_from;
-	godot_method_attributes get_player_points_atributes = {GODOT_METHOD_RPC_MODE_DISABLED};
-	nativescript_api->godot_nativescript_register_method(
-		p_handle, "Simple", "get_player_points", get_player_points_atributes, get_player_points);
-
-	// Condição de final de jogo
-	godot_instance_method can_continue_game = {NULL, NULL, NULL};
-	can_continue_game.method = &simple_game_can_continue;
-	godot_method_attributes can_continue_atributes = {GODOT_METHOD_RPC_MODE_DISABLED};
-	nativescript_api->godot_nativescript_register_method(
-		p_handle, "Simple", "can_continue_game", can_continue_atributes, can_continue_game);
-
-	// Verificação do vencedor
-	godot_instance_method get_winner = {NULL, NULL, NULL};
-	get_winner.method = &simple_get_winner;
-	godot_method_attributes get_winner_atributes = {GODOT_METHOD_RPC_MODE_DISABLED};
-	nativescript_api->godot_nativescript_register_method(
-		p_handle, "Simple", "get_winner", get_winner_atributes, get_winner);
-
-	// Verificação do vencedor
-	godot_instance_method get_pieces_count = {NULL, NULL, NULL};
-	get_pieces_count.method = &simple_get_pieces_count;
-	godot_method_attributes get_pieces_count_atributes = {GODOT_METHOD_RPC_MODE_DISABLED};
-	nativescript_api->godot_nativescript_register_method(
-		p_handle, "Simple", "get_pieces_count", get_pieces_count_atributes, get_pieces_count);
+	for (i = 0; i < LEN; ++i)
+		_generate_godot_method(methods[i].func, p_handle, methods[i].name);
 }
 
 
 // Armazena os dados membros de uma instância da nossa classe GDNative.
-
 typedef struct user_data_struct {
 	char data[256];
 	int teste;
@@ -246,19 +323,24 @@ godot_variant simple_teste(godot_object *p_instance, void *p_method_data, void *
 }
 */
 
+
+/* Retorna o tamanho da pilha nas coordenadas indicadas. */
 godot_variant simple_get_size_at(godot_object *p_instance, void *p_method_data, void *p_user_data,
 	int p_num_args, godot_variant **p_args)
 {
 	godot_variant ret;
 
-	if (p_num_args != 2) {
+	if (p_num_args != 3) {
 		api->godot_variant_new_int(&ret, -1);
 	}
 	else {
 		user_data_struct *user_data = (user_data_struct *)p_user_data;
-		int i = api->godot_variant_as_int(p_args[0]);
-		int j = api->godot_variant_as_int(p_args[1]);
-		int out = (i >= 0 && i < 5) ? stack_size((user_data->board)[i][j]) : -1;
+		int64_t x = api->godot_variant_as_int(p_args[0]);
+		int64_t y = api->godot_variant_as_int(p_args[1]);
+		int64_t player = api->godot_variant_as_int(p_args[2]);
+		int64_t out;
+		_get_rotated_coords(&x, &y, player);
+		out = IS_ON_BOUNDS(x, y) ? stack_size((user_data->board)[x][y]) : -1;
 
 		api->godot_variant_new_int(&ret, out);
 	}
@@ -267,6 +349,77 @@ godot_variant simple_get_size_at(godot_object *p_instance, void *p_method_data, 
 }
 
 
+godot_variant simple_get_next_rotated_coords(godot_object *p_instance, void *p_method_data,
+	void *p_user_data, int p_num_args, godot_variant **p_args)
+{
+	godot_variant ret;
+	godot_dictionary fetched_data;
+	// Dicionário que retornará os valores processados. Se retornar vazio indica falha na operação.
+	api->godot_dictionary_new(&fetched_data);
+
+	if (p_num_args == 5) {
+		user_data_struct *user_data = (user_data_struct *)p_user_data;
+		int64_t x = api->godot_variant_as_int(p_args[0]);
+		int64_t y = api->godot_variant_as_int(p_args[1]);
+		int64_t next_x = api->godot_variant_as_int(p_args[2]);
+		int64_t next_y = api->godot_variant_as_int(p_args[3]);
+		int64_t player = api->godot_variant_as_int(p_args[4]);
+		godot_string key;
+		godot_variant key_var;
+		godot_variant value;
+
+		// Realiza as operações necessárias.
+		_get_next_rotated_coords(&x, &y, next_x, next_y, player);
+
+		// Adiciona uma chave no dicionário de retorno.
+		api->godot_string_new(&key);
+		api->godot_string_parse_utf8(&key, "is_on_bounds");
+		api->godot_variant_new_string(&key_var, &key);
+		api->godot_variant_new_bool(&value, IS_ON_BOUNDS(x, y)); // Valor da chave `is_on_bounds`
+		api->godot_dictionary_set(&fetched_data, &key_var, &value);
+
+		// api->godot_string_new(&key);
+		// api->godot_string_parse_utf8(&key, "x");
+		// api->godot_variant_new_string(&key)
+		add_to_godot_dictionary(&fetched_data, "x", &x, GODOT_VARIANT_TYPE_INT);
+		add_to_godot_dictionary(&fetched_data, "y", &y, GODOT_VARIANT_TYPE_INT);
+	}
+	api->godot_variant_new_dictionary(&ret, &fetched_data);
+
+	return ret;
+}
+
+
+godot_variant simple_get_rotated_coords(godot_object *p_instance, void *p_method_data,
+	void *p_user_data, int p_num_args, godot_variant **p_args)
+{
+	godot_variant ret;
+	godot_dictionary fetched_data;
+	// Dicionário que retornará os valores processados. Se retornar vazio indica falha na operação.
+	api->godot_dictionary_new(&fetched_data);
+
+	if (p_num_args == 3) {
+		user_data_struct *user_data = (user_data_struct *)p_user_data;
+		int64_t x = api->godot_variant_as_int(p_args[0]);
+		int64_t y = api->godot_variant_as_int(p_args[1]);
+		int64_t player = api->godot_variant_as_int(p_args[2]);
+		godot_string key;
+		godot_variant key_var;
+		godot_variant value;
+
+		// Realiza as operações necessárias.
+		_get_rotated_coords(&x, &y, player);
+
+		add_to_godot_dictionary(&fetched_data, "x", &x, GODOT_VARIANT_TYPE_INT);
+		add_to_godot_dictionary(&fetched_data, "y", &y, GODOT_VARIANT_TYPE_INT);
+	}
+	api->godot_variant_new_dictionary(&ret, &fetched_data);
+
+	return ret;
+}
+
+
+/* Move uma peça para as coordenadas indicadas. */
 godot_variant simple_move_piece(godot_object *p_instance, void *p_method_data, void *p_user_data,
 	int p_num_args, godot_variant **p_args)
 {
@@ -275,15 +428,16 @@ godot_variant simple_move_piece(godot_object *p_instance, void *p_method_data, v
 
 	if (p_num_args == 4) {
 		user_data_struct *user_data = (user_data_struct *)p_user_data;
-		int i = api->godot_variant_as_int(p_args[0]);
-		int j = api->godot_variant_as_int(p_args[1]);
-		int piece = api->godot_variant_as_int(p_args[2]);
-		int player = api->godot_variant_as_int(p_args[3]);
+		int64_t x = api->godot_variant_as_int(p_args[0]);
+		int64_t y = api->godot_variant_as_int(p_args[1]);
+		int64_t piece = api->godot_variant_as_int(p_args[2]);
+		int64_t player = api->godot_variant_as_int(p_args[3]);
+		_get_rotated_coords(&x, &y, player);
 
-		if (i >= 0 && i < 5 && piece >= 0 && piece < 4 &&
+		if (IS_ON_BOUNDS(x, y) && piece >= 0 && piece < 4 &&
 			(list_count(user_data->players_pieces[player], (enum Piece)piece) > 0)) {
 
-			if (out = move(user_data->board, i, j, piece))
+			if (out = move(user_data->board, x, y, piece))
 				list_remove(user_data->players_pieces[player], (enum Piece)piece);
 		}
 	}
@@ -293,6 +447,7 @@ godot_variant simple_move_piece(godot_object *p_instance, void *p_method_data, v
 }
 
 
+/* Retorna a pontuação de um jogador indicado. */
 godot_variant simple_get_points_from(godot_object *p_instance, void *p_method_data,
 	void *p_user_data, int p_num_args, godot_variant **p_args)
 {
@@ -313,6 +468,7 @@ godot_variant simple_get_points_from(godot_object *p_instance, void *p_method_da
 }
 
 
+/* Verifica se a condição de término do jogo foi atingida. */
 godot_variant simple_game_can_continue(godot_object *p_instance, void *p_method_data,
 	void *p_user_data, int p_num_args, godot_variant **p_args)
 {
@@ -324,11 +480,12 @@ godot_variant simple_game_can_continue(godot_object *p_instance, void *p_method_
 }
 
 
+/* Retorna o vencedor do jogo. */
 godot_variant simple_get_winner(godot_object *p_instance, void *p_method_data, void *p_user_data,
 	int p_num_args, godot_variant **p_args)
 {
 	godot_variant ret;
-	int out = -1;
+	int64_t out = -1;
 
 	if (p_num_args == 1) {
 		user_data_struct *user_data = (user_data_struct *)p_user_data;
@@ -343,11 +500,12 @@ godot_variant simple_get_winner(godot_object *p_instance, void *p_method_data, v
 }
 
 
+/* Retorna a quantidade de peças do jogador indicado. */
 godot_variant simple_get_pieces_count(godot_object *p_instance, void *p_method_data,
 	void *p_user_data, int p_num_args, godot_variant **p_args)
 {
 	godot_variant ret;
-	int out = -1;
+	int64_t out = -1;
 
 	if (p_num_args == 2) {
 		user_data_struct *user_data = (user_data_struct *)p_user_data;
@@ -361,21 +519,3 @@ godot_variant simple_get_pieces_count(godot_object *p_instance, void *p_method_d
 
 	return ret;
 }
-
-
-// // Pega um nó da árvore da cena em tempo de execução
-// godot_variant pegar_no(const char *tipo, const godot_variant *caminho)
-// {
-// 	godot_variant no_recebido;
-// 	godot_method_bind *metodo_get_node = api->godot_method_bind_get_method(tipo, "get_node");
-// 	godot_variant caminho_no;
-// 	godot_variant *argumentos[1];
-// 	godot_variant_call_error error;
-
-// 	api->godot_variant_new_node_path(&caminho_no, &caminho);
-// 	argumentos[0] = &caminho_no;
-// 	godot_variant ret =
-// 		api->godot_method_bind_call(metodo_get_node, no_recebido, argumentos, 1, &error);
-
-// 	return no_recebido;
-// }
