@@ -147,19 +147,26 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_tree().set_input_as_handled()
 	
 	if event.is_action_pressed("ui_focus_prev"):
-		current_piece_type = (current_piece_type + 1) % 3
-		current_piece.set_surface_material(0, MATERIALS[current_piece_type])
-		current_piece.get_node("Sprite3D").texture = TEXTURES[current_piece_type]
-		get_tree().set_input_as_handled()
+		
+		for i in 3:
+			current_piece_type = (current_piece_type + 1) % 3
+			
+			if simple.get_pieces_count(current_piece_type, current_player) > 0:
+				current_piece.set_surface_material(0, MATERIALS[current_piece_type])
+				current_piece.get_node("Sprite3D").texture = TEXTURES[current_piece_type]
+				get_tree().set_input_as_handled()
+				break
 		
 	elif event.is_action_pressed("ui_focus_next"):
-		current_piece_type = (3 + current_piece_type - 1) % 3
 		
-		# TODO -> Impedir peças usadas de serem selecionadas.
-		
-		current_piece.set_surface_material(0, MATERIALS[current_piece_type])
-		current_piece.get_node("Sprite3D").texture = TEXTURES[current_piece_type]
-		get_tree().set_input_as_handled()
+		for i in 3:
+			current_piece_type = (3 + current_piece_type - 1) % 3
+			
+			if simple.get_pieces_count(current_piece_type, current_player) > 0:
+				current_piece.set_surface_material(0, MATERIALS[current_piece_type])
+				current_piece.get_node("Sprite3D").texture = TEXTURES[current_piece_type]
+				get_tree().set_input_as_handled()
+				break
 	
 	if event.is_action_pressed("ui_accept"):
 		

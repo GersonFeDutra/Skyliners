@@ -549,7 +549,6 @@ tracks/1/keys = {
 script = ExtResource( 1 )
 pitch_shift_min = 0.6
 pitch_shift_max = 1.2
-camera_path = NodePath("World/SplitScreen/ViewportContainer/Viewport/Camera")
 
 [node name="World" type="Spatial" parent="."]
 
